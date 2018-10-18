@@ -7,4 +7,9 @@
     <string name="title_favourite">Favourite</string>
     <string name="title_profile">Profile</string>
     <string name="title_gallery">Gallery</string>
+    <string name="title_activity_test">Test</string>
+    <string-array name="search">
+        <item>Hello</item>
+        <item>abc</item>
+    </string-array>
 </resources>
