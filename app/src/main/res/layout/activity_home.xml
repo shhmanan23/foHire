@@ -20,6 +20,13 @@
 
         </com.miguelcatalan.materialsearchview.MaterialSearchView>
 
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

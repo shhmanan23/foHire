@@ -16,10 +16,18 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                    Intent i = new Intent(SplashActivity.this, HomeActivity.class);
-                    startActivity(i);
-                    finish();
-                    return;
+                    if(Common.getPreferenceString(getApplicationContext(),"AlreadySign","").equals("1")){
+                        Intent i = new Intent(SplashActivity.this, HomeActivity.class);
+                        startActivity(i);
+                        finish();
+                        return;
+                    } else {
+                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(i);
+                        finish();
+                        return;
+                    }
+
 
             }
         }, 2000);

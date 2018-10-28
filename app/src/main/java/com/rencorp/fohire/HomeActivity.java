@@ -3,6 +3,7 @@ package com.rencorp.fohire;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,26 +15,30 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 public class HomeActivity extends AppCompatActivity {
     MaterialSearchView searchView;
     //private TextView mTextMessage;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment fragment=null;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     //mTextMessage.setText(R.string.title_home);
-                    return true;
+                    fragment = new HomeFragment();
+                    break;
                 case R.id.navigation_favourites:
                     //mTextMessage.setText(R.string.title_favourite);
-                    return true;
-                case R.id.navigation_notifications:
+                    fragment = new FavouriteFragment();
+                    break;
+                    case R.id.navigation_notifications:
                     //mTextMessage.setText(R.string.title_notifications);
-                    return true;
+                    fragment = new NotificationFragment();
+                    break;
                 case R.id.navigation_profile:
-                    return true;
+                    fragment = new ProfileFragment();
+                    break;
             }
-            return false;
+            return loadFragment(fragment);
         }
     };
 
@@ -51,9 +56,23 @@ public class HomeActivity extends AppCompatActivity {
 
         searchViewCode();
 
+        loadFragment(new HomeFragment());
+
         //mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frameLayout, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
     private void searchViewCode() {
         searchView = (MaterialSearchView) findViewById(R.id.search_View);

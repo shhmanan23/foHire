@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "143517129245",
+    "firebase_url": "https://fohire-24b8c.firebaseio.com",
+    "project_id": "fohire-24b8c",
+    "storage_bucket": "fohire-24b8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143517129245:android:fa60fcbe29332e98",
+        "android_client_info": {
+          "package_name": "com.rencorp.fohire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143517129245-d812rvjgphh3audludk9l4sp6d8bsl8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rencorp.fohire",
+            "certificate_hash": "f1a9fa774fa3f93ff6f2bba53f424abd3f93bd61"
+          }
+        },
+        {
+          "client_id": "143517129245-ujp3omm4maq0km2b9i88562o0vmidkr4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEqkxsKg-gUsBOH0MyO0xsYMS0ByS1aO4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143517129245-ujp3omm4maq0km2b9i88562o0vmidkr4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "143517129245-eb504s88vbkk0crct25rs0hgmcka79ub.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rencorp.fohire"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
