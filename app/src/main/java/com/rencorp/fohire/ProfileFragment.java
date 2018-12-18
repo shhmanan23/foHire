@@ -35,7 +35,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Common.setPreferenceString(getActivity(),"AlreadySign","");
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(),LoginActivity.class);
+                Intent intent = new Intent(getActivity(),SplashActivity.class);
                 getActivity().startActivity(intent);
                 getActivity().finish();
                 return;
