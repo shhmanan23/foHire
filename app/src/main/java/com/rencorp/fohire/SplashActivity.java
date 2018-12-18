@@ -1,13 +1,17 @@
 package com.rencorp.fohire;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -25,8 +29,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 public class SplashActivity extends AppCompatActivity {
 
+    private static final String TAG_SUCCESS = "success";
     /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +63,11 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 2000);
     }*/
+    JSONParser jsonParser = new JSONParser();
+    JSONArray jsonArray = null;
+    EditText edPass, edUser;
+    Button btnLogin;
+    String token = new String();
 
     SignInButton signInButton;
     private static final int RC_SIGN_IN = 1;
@@ -70,41 +86,8 @@ public class SplashActivity extends AppCompatActivity {
             rellay2.setVisibility(View.VISIBLE);
         }
     };
+    private ProgressDialog pDialog;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-
-        if(Common.getPreferenceString(getApplicationContext(),"AlreadySign","").equals("1")){
-            Intent i = new Intent(SplashActivity.this, HomeActivity.class);
-            startActivity(i);
-            finish();
-            return;
-        }
-
-        rellay1 = (RelativeLayout) findViewById(R.id.rellay1);
-        rellay2 = (RelativeLayout) findViewById(R.id.rellay2);
-
-        handler.postDelayed(runnable, 2000); //2000 is the timeout for the splash
-
-        signInButton = (SignInButton)findViewById(R.id.sign_in_button);
-        mAuth= FirebaseAuth.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-    }
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -168,5 +151,88 @@ public class SplashActivity extends AppCompatActivity {
         }
         //Toast.makeText(getApplicationContext(),"",Toast.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
+
+        if (Common.getPreferenceString(getApplicationContext(), "AlreadySign", "").equals("1")) {
+            Intent i = new Intent(SplashActivity.this, HomeActivity.class);
+            startActivity(i);
+            finish();
+            return;
+        }
+
+        rellay1 = (RelativeLayout) findViewById(R.id.rellay1);
+        rellay2 = (RelativeLayout) findViewById(R.id.rellay2);
+
+        handler.postDelayed(runnable, 2000); //2000 is the timeout for the splash
+
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        mAuth = FirebaseAuth.getInstance();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+
+        btnLogin = (Button) findViewById(R.id.btnlogin);
+        edPass = (EditText) findViewById(R.id.edPass);
+        edUser = (EditText) findViewById(R.id.edUser);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new CheckLogin().execute();
+            }
+        });
+    }
+
+    class CheckLogin extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(SplashActivity.this);
+            pDialog.setMessage("Checking User..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        protected String doInBackground(String... args) {
+            JSONObject json = null;
+            //String uid = Common.getPreferenceString(getApplicationContext(), "UId", "");
+            try {
+                jsonArray = new JSONArray();
+
+                json = jsonParser.getDataFromWeb("http://192.168.29.172:8080/FohireMobile_war_exploded/login?user=ru&password=manan");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                token = json.getString("token");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(String file_url) {
+            pDialog.dismiss();
+        }
     }
 }
